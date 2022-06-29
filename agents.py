@@ -11,7 +11,7 @@ class Agent:
         self.name = name
         self.position = position
         self.velocity = np.array((0,0))
-        self.last_move = [np.array([0,0]),np.array([0,0])]
+        self.last_move = position
 
     def update_situation(self, agents):
         self.hunters, self.prey = agents
@@ -19,6 +19,7 @@ class Agent:
     def make_maneuver(self):
         vector, thrust = self.decision_function(self.name, self.hunters, self.prey)
         if np.linalg.norm(vector) < 1e-5:
+            print(self.name, 'standing still', vector)
             self.position = self.position + self.velocity
             return np.array([0,0])
         acceleration = vector/np.linalg.norm(vector)*self.max_acceleration*thrust
